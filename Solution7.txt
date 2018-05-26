@@ -1,0 +1,472 @@
+Lab 7 Solutions
+
+Braces in a string are considered to be balanced if the following criteria are met:
+
+·         For every opening brace (i.e., (, {, or [), there is a matching closing brace (i.e., ), }, or ]) of the same type (i.e., ( matches ), { matches }, and [matches ]). An opening brace must appear before (to the left of) its matching closing brace. For example, ]{}[ is not balanced.
+
+·         No unmatched braces lie between some pair of matched braces. For example, ({[]}) is balanced, but {[}] and [{)] are not balanced.
+
+ 
+
+Complete the braces function in the editor below. It has one parameter: an array of n strings, values. For each string in values, it must determine if all the braces in the string are balanced. The function must return an array of strings where the string at each index i (where 0 ≤ i < n) denotes whether or not all the braces in string valuesi were balanced. If yes, then index i in the return array must contain the string YES; otherwise, index i in the return array must contain the string NO.
+
+ 
+
+Input Format
+
+Locked stub code in the editor reads the following input from stdin:
+
+The first line contains an integer, n, denoting the number of elements in values.
+
+Each line i of the n subsequent lines (where 0 ≤ i < n) contains a string describing valuesi.
+
+The locked stub code then passes the string array values as an argument to the braces() function.
+
+ 
+
+Constraints
+
+·         1 ≤ n ≤ 15
+
+·         1 ≤ length of valuesi ≤ 100
+
+·         It is guaranteed that each valuesi consists of (, ), {, }, [, and ] only.
+
+ 
+
+Output Format
+
+The function must return an array of strings where each index i contains either YES or NO denoting whether or not valuesi was balanced. This is printed to stdout by locked stub code in the editor.
+
+ 
+
+Sample Input 0
+
+2
+
+{}[]()
+
+{[}]}
+
+ 
+
+Sample Output 0
+
+YES
+
+NO
+
+ 
+
+Explanation 0
+
+values0: {}[]() meets the criteria for a balanced string, so index 0 in our return array should contain the string YES.
+
+values1: {[}] contains unmatched braces between a matched pair in the substrings [}, {[}, and [}], so index 1 in our return array should contain the string NO.
+
+ 
+
+ 
+
+public static class Stack { (courtesy of Conor Kerrigan)
+
+     /* size of stack array */
+
+     private int maxSize;
+
+     private Object[] stackArray;
+
+     /* top of stack */
+
+     private int top;
+
+ 
+
+     /* constructor */
+
+     public Stack(int s) {
+
+           maxSize = s; // set array size
+
+           stackArray = new Object[maxSize]; // create array
+
+           top = -1; // no items yet }
+
+     }
+
+ 
+
+     /* put item on top of stack */
+
+     public void push(Object j) {
+
+           top++;
+
+           stackArray[top] = j; // increment top, insert item
+
+     }
+
+ 
+
+     /* take item from top of stack */
+
+     public Object pop() {
+
+           return stackArray[top--]; // access item, decrement top
+
+     }
+
+ 
+
+      /* peek at top of stack */
+
+     public Object peek() {
+
+           return stackArray[top];
+
+     }
+
+ 
+
+     /* true if stack is empty */
+
+     public boolean isEmpty() {
+
+           return (top == -1);
+
+     }
+
+ 
+
+     /* true if stack is full */
+
+     public boolean isFull() {
+
+           return (top == maxSize - 1);
+
+     }
+
+ 
+
+     /* empty stack */
+
+     public void makeEmpty() {
+
+           top = -1;
+
+     }
+
+    
+
+}
+
+ 
+
+    public static boolean parenthesesMatching(String string) {
+
+           byte[][] braces = { { '{', '}' }, { '[', ']' }, { '(', ')' } };
+
+           char b1;
+
+           char b2;
+
+ 
+
+           Stack theStack = new Stack(20);
+
+ 
+
+           for (int i = 0; i < string.length(); i++) {
+
+                b1 = string.charAt(i);
+
+                // Opening brackets are placed on a stack
+
+                if (b1 == '{' || b1 == '(' || b1 == '[' || b1 == '<') {
+
+                     theStack.push(b1);
+
+                }
+
+ 
+
+                // When the program comes across a closing bracket it pops from
+
+                // the ‘opening bracket stack’ and this should match
+
+                if (b1 == '}' || b1 == ')' || b1 == ']' || b1 == '>') {
+
+                     if (theStack.isEmpty())
+
+                           return false;
+
+                     b2 = (char) theStack.pop();
+
+                     switch (b2) {
+
+                     case '{':
+
+                           if (b1 != '}')
+
+                                return false;
+
+                           break;
+
+                     case '(':
+
+                           if (b1 != ')')
+
+                                return false;
+
+                           break;
+
+                     case '[':
+
+                           if (b1 != ']')
+
+                                return false;
+
+                           break;
+
+                     case '<':
+
+                           if (b1 != '>')
+
+                                return false;
+
+                     }
+
+                }
+
+ 
+
+           }
+
+           return (theStack.isEmpty());
+
+ 
+
+     }
+
+ 
+
+ 
+
+ 
+
+    /*
+
+     * Complete the function below.
+
+     */
+
+    static String[] braces(String[] values) {
+
+        String[] res = new String[values.length];
+
+       for (int i = 0; i < values.length; i++) {
+
+           res[i] =  parenthesesMatching(values[i]) ? "YES": "NO";
+
+       }
+
+       
+
+        return res;
+
+    }
+
+ 
+
+ 
+
+ 
+
+Problem Statement
+
+In this task you will get a set of instructions to get from a home location to a destination location. You have to give the instructions which begin at the destination location and return to the home location. In other words, you need to reverse the directions. Sometimes a mistake will be make with the directions, meaning that the latest direction should be deleted. The possible set of directions is "Go North", "Go South", "Go East" and "Go West". Another possible instruction is "Go Back" which means to undo the latest step. The instruction "Arrived" means the sequence of directions is complete.
+
+The way to solve this problem is to push all the instructions onto the stack, pop when you get "Go Back", and then pop them all off at the end (flipping North <-> South and East <-> West) to have a reversed set of instructions to get you home. 
+
+ 
+
+You can copy and paste the code for a Stack class from the notes and alter it to work with Strings (or maybe use chars or ints if you want to represent the instructions in a different format).
+
+ 
+
+NOTE: You will never be asked to "Go Back" without at least 1 previous valid direction
+
+ 
+
+Input Format
+
+A sequence of n lines which can consist of "Go North", "Go South", "Go East", "Go West", "Go Back" and "Arrived" 
+
+ 
+
+Output Format
+
+A reversed set of instructions, each instruction on a separate line, which can consist of "Go North", "Go South", "Go East", and "Go West"
+
+ 
+
+Constraints
+
+1≤n≤100
+
+ 
+
+Sample Input
+
+Go North
+
+Go North
+
+Go West
+
+Go Back
+
+Arrived
+
+ 
+
+Sample Output
+
+Go South
+
+Go South
+
+ 
+
+(courtesy of Peter Beattie)
+
+ 
+
+public static void main(String args[] ) throws Exception {
+
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+
+        Scanner scan = new Scanner(System.in);
+
+        Stack st = new Stack();
+
+        String line[] = scan.nextLine().split(" ");
+
+       
+
+        while(line[0].matches("Arrived") == false){
+
+            if(line[1].matches("Back")){
+
+                st.pop();
+
+            }
+
+           
+
+            else{
+
+                st.push(line[1]);
+
+            }
+
+            line = scan.nextLine().split(" ");
+
+        }
+
+       
+
+        while(st.isEmpty() == false){
+
+            String s = st.pop();
+
+           
+
+            if(s.matches("North")) System.out.println("Go South");
+
+            else if(s.matches("South")) System.out.println("Go North");
+
+            else if(s.matches("West")) System.out.println("Go East");
+
+            else if(s.matches("East")) System.out.println("Go West");
+
+        }
+
+    }
+
+ 
+
+    public static class Node {
+
+        String data;
+
+        Node next;
+
+       
+
+        public Node(String s){
+
+            data = s;
+
+        }
+
+    }
+
+ 
+
+    public static class Stack {
+
+        Node head;
+
+       
+
+        public void push(String s){
+
+            if(head==null){
+
+                head = new Node(s);
+
+                return;
+
+            }
+
+            Node oldhead = head;
+
+            head = new Node(s);
+
+            head.next = oldhead;
+
+            return;
+
+        }
+
+       
+
+        public String pop(){
+
+            if(head ==null){
+
+                return " ";
+
+            }
+
+            Node returnHead = head;
+
+            head = head.next;
+
+            return returnHead.data;
+
+        }
+
+       
+
+        public boolean isEmpty(){
+
+            return (head==null);
+
+        }
+
+    }
+
+}
+
