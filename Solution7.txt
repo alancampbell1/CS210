@@ -68,7 +68,7 @@ values1: {[}] contains unmatched braces between a matched pair in the substrings
 
  
 
-public static class Stack { (courtesy of Conor Kerrigan)
+public static class Stack {
 
      /* size of stack array */
 
@@ -336,9 +336,6 @@ Go South
 
 Go South
 
- 
-
-(courtesy of Peter Beattie)
 
  
 

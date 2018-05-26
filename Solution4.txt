@@ -38,7 +38,7 @@ Sample Output
 
 
 
-Solution (courtesy of Qi Jie Lam)
+Solution
 
 
 
@@ -198,7 +198,7 @@ They are 2, 3, 5, 7, 11, 13, 17, and 19.
 
 
 
-Solution (courtesty of Manyiu Lam)
+Solution
 
 
 

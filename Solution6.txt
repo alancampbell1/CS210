@@ -92,8 +92,7 @@ The 3rd words in the list is "is"
 
  
 
-import java.util.*;   (courtesty of Michael Sheridan)
-
+import java.util.*;
  
 
 public class Solution{
@@ -251,7 +250,7 @@ When sorted by exam scores, the class looks like
 
  
 
-import java.util.*; (courtesty of Manyiu Lam)
+import java.util.*;
 
  
 

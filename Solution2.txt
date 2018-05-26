@@ -32,8 +32,7 @@ public class Solution {
 
 
 
-Find the xth biggest number (courtesy of Manyiu Lam)
-
+Find the xth biggest number
 
 
 import java.io.*;
